@@ -10,6 +10,7 @@
 #define emb emplace_back
 #define endll "\n"
 using namespace std;
+using namespace atcoder;
 template<class T> inline void input(vector<T> &v){
   for(int i=0;i<v.size();i++) cin >> v[i];
 }
