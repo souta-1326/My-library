@@ -79,6 +79,26 @@ vector<int> prime_format(int n){
   }
   return ans;
 }
+template<class T> vector<T> topo_sort(T N,vector<vector<T>> G){
+  T i,j,f;
+  vector<int> cnt(N);
+  for(i=0;i<N;i++){
+    for(j=0;j<G[i].size();j++) cnt[G[i][j]]++;
+  }
+  vector<T> q;
+  for(i=0;i<N;i++){
+    if(cnt[i] == 0) q.emb(i);
+  }
+  for(f=0;f<N;f++){
+    for(i=0;i<G[q[f]].size();i++){
+      cnt[G[q[f]][i]]--;
+      if(cnt[G[q[f]][i]] == 0){
+        q.emb(G[q[f]][i]);
+      }
+    }
+  }
+  return q;
+}
 template<class T> vector<T> dijkstra(T N,vector<T> st,vector<vector<pair<T,T>>> G){
   T fn,fp,i;
   priority_queue<pair<T,T>,vector<pair<T,T>>,greater<>> q;
