@@ -11,6 +11,7 @@
 #define endll "\n"
 using namespace std;
 using namespace atcoder;
+using ll = long long;
 template<class T> inline void input(vector<T> &v){
   for(int i=0;i<v.size();i++) cin >> v[i];
 }
@@ -46,11 +47,11 @@ template<class T> inline void output(vector<vector<T>> &v){
     cout << v[i].back() << endll;
   }
 }
-template<class T,class S> T gcd(T x,S y){
+template<class T> T gcd(T x,T y){
   if(x%y==0) return y;
   else return gcd(y,x%y);
 }
-template<class T,class S> T lcm(T x,S y){
+template<class T> T lcm(T x,T y){
   return x/gcd(x,y)*y;
 }
 template<class T,class S> T ceil(T x,S y){
