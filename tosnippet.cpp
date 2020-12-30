@@ -5,7 +5,7 @@ int main(){
   string s,ou;
   int i;bool ok;
   while(getline(cin,s)){
-    ou = "\"";ok = true;
+    ou = "      \"";ok = true;
     for(i=0;i<s.size();i++){
       if(s[i] == ' ' && ok){
         ou += '\\';ou += 't';i++;continue;
