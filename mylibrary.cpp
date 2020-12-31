@@ -4,6 +4,7 @@
 #pragma GCC optimize("O3")
 #pragma GCC optimize("unroll-loops")
 #define PI arccos(-1)
+#define all(v) (v).begin(),(v).end()
 #define fi first
 #define se second
 #define mpa make_pair
