@@ -55,6 +55,9 @@ template<class T> T gcd(T x,T y){
 template<class T> T lcm(T x,T y){
   return x/gcd(x,y)*y;
 }
+template<class T> bool on(T n,T i){
+  return n&(1<<i);
+}
 template<class T,class S> T ceil(T x,S y){
   if(x == 0) return 0;
   else return (x-1)/y+1;
@@ -207,6 +210,44 @@ public:
   }
   vector<vector<T>> Graph(){
     return D;
+  }
+};
+template<class T> class mat{
+  vector<vector<T>> V;
+public:
+  constexpr mat(){}
+  constexpr mat(int N,int M){
+    vector<vector<T>>(N,vector<T>(M)).swap(this->V);
+  }
+  constexpr mat(vector<vector<T>> &v){
+    this->V = v;
+  }
+  constexpr int height(){return V.size();}
+  constexpr int width(){return V[0].size();}
+  constexpr T &val(int a,int b){return V[a][b];}
+  constexpr vector<T> val(int a){return V[a];}
+  constexpr vector<vector<T>> val(){return V;}
+  //ret(mat[i][j],elem(a[i][k],b[k][j]))
+  constexpr mat calc(mat &b,function<T(T,T)> ret = [](T x,T y){return x+y;},function<T(T,T)> elem = [](T x,T y){return x*y;})const{
+    vector<vector<T>> c(V.size(),vector<T>(b.width()));
+    for(int i=0;i<V.size();i++){
+      for(int j=0;j<b.width();j++){
+        for(int k=0;k<b.height();k++) c[i][j] = ret(c[i][j],elem(V[i][k],b.val(k,j)));
+      }
+    }
+    return mat(c);
+  }
+  constexpr mat pow(ll y,function<T(T,T)> ret = [](T x,T y){return x+y;},function<T(T,T)> elem = [](T x,T y){return x*y;}) const {
+    mat x = *this,z;
+    while(y){
+      if(y&1){
+        if(z.height() == 0) z = x;
+        else z = z.calc(x,ret,elem);
+      }
+      x = x.calc(x,ret,elem);
+      y >>= 1;
+    }
+    return z;
   }
 };
 int main(){
