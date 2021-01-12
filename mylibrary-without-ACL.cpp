@@ -13,21 +13,21 @@
 using namespace std;
 //using namespace atcoder;
 using ll = long long;
-template<class T> inline void input(vector<T> &v){
+template<class T> constexpr inline void input(vector<T> &v){
   for(int i=0;i<v.size();i++) cin >> v[i];
 }
-template<class T,class S> inline void input(vector<T> &v,vector<S> &u){
+template<class T,class S> constexpr inline void input(vector<T> &v,vector<S> &u){
   for(int i=0;i<v.size();i++) cin >> v[i] >> u[i];
 }
-template<class T,class S,class R> inline void input(vector<T> &v,vector<S> &u,vector<R> &t){
+template<class T,class S,class R> constexpr inline void input(vector<T> &v,vector<S> &u,vector<R> &t){
   for(int i=0;i<v.size();i++) cin >> v[i] >> u[i] >> t[i];
 }
-template<class T> inline void input(vector<vector<T>> &v){
+template<class T> constexpr inline void input(vector<vector<T>> &v){
   for(int i=0;i<v.size();i++){
     for(int j=0;j<v[0].size();j++) cin >> v[i][j];
   }
 }
-template<class T> inline void output(vector<T> &v,bool space = true){
+template<class T> constexpr inline void output(vector<T> &v,bool space = true){
   if(space){
     for(int i=0;i<v.size()-1;i++) cout << v[i] << " ";
     cout << v.back() << endll;
@@ -36,33 +36,33 @@ template<class T> inline void output(vector<T> &v,bool space = true){
     for(int i=0;i<v.size();i++) cout << v[i] << endll;
   }
 }
-template<class T,class S> inline void output(vector<T> &v,vector<S> &u){
+template<class T,class S> constexpr inline void output(vector<T> &v,vector<S> &u){
   for(int i=0;i<v.size();i++) cout << v[i] << " " << u[i] << endll;
 }
-template<class T,class S,class R> inline void output(vector<T> &v,vector<S> &u,vector<R> &t){
+template<class T,class S,class R> constexpr inline void output(vector<T> &v,vector<S> &u,vector<R> &t){
   for(int i=0;i<v.size();i++) cout << v[i] << " " << u[i] << " " << t[i] << endll;
 }
-template<class T> inline void output(vector<vector<T>> &v){
+template<class T> constexpr inline void output(vector<vector<T>> &v){
   for(int i=0;i<v.size();i++){
     for(int j=0;j<v[0].size()-1;j++) cout << v[i][j] << " ";
     cout << v[i].back() << endll;
   }
 }
-template<class T> T gcd(T x,T y){
+template<class T> constexpr T gcd(T x,T y){
   if(x%y==0) return y;
   else return gcd(y,x%y);
 }
-template<class T> T lcm(T x,T y){
+template<class T> constexpr T lcm(T x,T y){
   return x/gcd(x,y)*y;
 }
-template<class T> bool on(T n,T i){
+template<class T> constexpr inline bool on(T n,T i){
   return n&(1<<i);
 }
-template<class T,class S> T ceil(T x,S y){
+template<class T,class S> constexpr inline T ceil(T x,S y){
   if(x == 0) return 0;
   else return (x-1)/y+1;
 }
-template<class T> bool isprime(T x){
+template<class T> constexpr bool isprime(T x){
   for(T i=2;i*i<=x;i++){
     if(x%i == 0) return false; 
   }
@@ -250,8 +250,3 @@ public:
     return z;
   }
 };
-int main(){
-  cin.tie(0);ios::sync_with_stdio(false);
-  //-----------------------------------------------
-  
-}
