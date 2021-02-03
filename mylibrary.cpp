@@ -48,13 +48,6 @@ template<class T> constexpr inline void output(vector<vector<T>> &v){
     cout << v[i].back() << endll;
   }
 }
-template<class T> constexpr T gcd(T x,T y){
-  if(x%y==0) return y;
-  else return gcd(y,x%y);
-}
-template<class T> constexpr T lcm(T x,T y){
-  return x/gcd(x,y)*y;
-}
 template<class T> constexpr inline bool on(T n,T i){
   return n&(1<<i);
 }
@@ -127,7 +120,7 @@ template<class T> vector<T> dijkstra(T N,vector<T> st,vector<vector<pair<T,T>>> 
 template<class T> vector<T> dijkstra(T N,T st,vector<vector<pair<T,T>>> G){
   return dijkstra(N,vector<T>({st}),G);
 }
-template <class T> class WarshallFloyd{
+template<class T> class WarshallFloyd{
   T N,inf;
   vector<vector<T>> D;
   vector<vector<T>> prev;
@@ -248,6 +241,110 @@ public:
       y >>= 1;
     }
     return z;
+  }
+};
+template<class T> class frac{
+  T bunsi,bunbo;
+  constexpr void setting() noexcept {
+    T g = gcd(bunsi,bunbo);
+    bunsi /= g;bunbo /= g;
+    if(bunbo < 0){
+      bunsi = -bunsi;bunbo = -bunbo;
+    }
+  }
+public:
+  constexpr frac(T Bunsi = 0,T Bunbo = 1) noexcept {
+    bunsi = Bunsi;bunbo = Bunbo;
+    setting();
+  }
+  constexpr T &Bunsi() noexcept {return bunsi;}
+  constexpr const T &Bunsi() const noexcept {return bunsi;}
+  constexpr T &Bunbo() noexcept {return bunbo;}
+  constexpr const T &Bunbo() const noexcept {return bunbo;}
+  constexpr frac<T> &operator+=(const frac<T> &rhs) noexcept {
+    bunsi = bunsi*rhs.bunbo+bunbo*rhs.bunsi;
+    bunbo *= rhs.bunbo;
+    setting();
+    return *this;
+  }
+  constexpr frac<T> &operator-=(const frac<T> &rhs) noexcept {
+    bunsi = bunsi*rhs.bunbo-bunbo*rhs.bunsi;
+    bunbo *= rhs.bunbo;
+    setting();
+    return *this;
+  }
+  constexpr frac<T> &operator*=(const frac<T> &rhs) noexcept {
+    bunbo *= rhs.bunbo;
+    bunsi *= rhs.bunsi;
+    setting();
+    return *this;
+  }
+  constexpr frac<T> &operator/=(const frac<T> &rhs) noexcept {
+    bunbo *= rhs.bunsi;
+    bunsi *= rhs.bunbo;
+    setting();
+    return *this;
+  }
+  constexpr frac<T> operator+(const frac<T> &rhs) const noexcept {return frac(*this) += rhs;}
+  constexpr frac<T> operator-(const frac<T> &rhs) const noexcept {return frac(*this) -= rhs;}
+  constexpr frac<T> operator*(const frac<T> &rhs) const noexcept {return frac(*this) *= rhs;}
+  constexpr frac<T> operator/(const frac<T> &rhs) const noexcept {return frac(*this) /= rhs;}
+  constexpr bool operator<(const frac<T> &rhs) const noexcept {return bunsi*rhs.bunbo < bunbo*rhs.bunsi;}
+  constexpr bool operator>(const frac<T> &rhs) const noexcept {return bunsi*rhs.bunbo > bunbo*rhs.bunsi;}
+  constexpr bool operator>=(const frac<T> &rhs) const noexcept {return bunsi*rhs.bunbo >= bunbo*rhs.bunsi;}
+  constexpr bool operator<=(const frac<T> &rhs) const noexcept {return bunsi*rhs.bunbo <= bunbo*rhs.bunsi;}
+  constexpr bool operator==(const frac<T> &rhs) const noexcept {return bunsi*rhs.bunbo == bunbo*rhs.bunsi;}
+  constexpr bool operator!=(const frac<T> &rhs) const noexcept {return bunsi*rhs.bunbo != bunbo*rhs.bunsi;}
+};
+template<class T> class line{
+  //y = ax+b;
+  frac<T> a,b;
+  bool a_inf;
+  T inf_x;
+public:
+  constexpr line(T x1 = 0,T y1 = 0,T x2 = 1,T y2 = 1) noexcept {
+    if(x1 != x2){
+      a_inf = false;
+      a = frac(y2-y1,x2-x1);
+      b = frac(y1)-frac(x1)*a;
+    }
+    else{
+      a_inf = true;
+      inf_x = x1;
+    }
+  }
+  constexpr frac<T> &slope() noexcept {return a;}
+  constexpr const frac<T> &slope() const noexcept {return a;}
+  constexpr frac<T> &inter() noexcept {return b;}
+  constexpr const frac<T> &inter() const noexcept {return b;}
+  constexpr bool match(const line &rhs) const noexcept {
+    if(!a_inf && !rhs.a_inf) return a==rhs.a && b==rhs.b;
+    else if(a_inf^rhs.a_inf) return false;
+    else return inf_x==rhs.inf_x;
+  }
+  constexpr bool parallel(const line &rhs) const noexcept {
+    if(!a_inf && !rhs.a_inf) return a==rhs.a;
+    else return !(a_inf^rhs.a_inf);
+  }
+  constexpr pair<frac<T>,frac<T>> point(const line &rhs) const noexcept {
+    //ax+b = y
+    //cx+d = y
+    //(a-c)x= d-b
+    if(a_inf){
+      frac<T> x(inf_x);
+      frac<T> y = rhs.a*x+rhs.b;
+      return make_pair(x,y);
+    }
+    else if(rhs.a_inf){
+      frac<T> x(rhs.inf_x);
+      frac<T> y = a*x+b;
+      return make_pair(x,y);
+    }
+    else{
+      frac<T> x = (rhs.b-b)/(a-rhs.a);
+      frac<T> y = a*x+b;
+      return make_pair(x,y);
+    }
   }
 };
 int main(){
