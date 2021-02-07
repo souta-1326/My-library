@@ -305,8 +305,8 @@ public:
   constexpr line(T x1 = 0,T y1 = 0,T x2 = 1,T y2 = 1) noexcept {
     if(x1 != x2){
       a_inf = false;
-      a = frac(y2-y1,x2-x1);
-      b = frac(y1)-frac(x1)*a;
+      a = frac<T>(y2-y1,x2-x1);
+      b = frac<T>(y1)-frac<T>(x1)*a;
     }
     else{
       a_inf = true;
