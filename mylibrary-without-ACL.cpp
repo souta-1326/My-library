@@ -3,7 +3,7 @@
 #pragma GCC target("avx2")
 #pragma GCC optimize("O3")
 #pragma GCC optimize("unroll-loops")
-#define PI arccos(-1)
+#define PI acos(-1)
 #define all(v) (v).begin(),(v).end()
 #define fi first
 #define se second
@@ -52,8 +52,7 @@ template<class T> constexpr inline bool on(T n,T i){
   return n&(1<<i);
 }
 template<class T,class S> constexpr inline T ceil(T x,S y){
-  if(x == 0) return 0;
-  else return (x-1)/y+1;
+  return (x+y-1)/y;
 }
 template<class T> constexpr bool isprime(T x){
   for(T i=2;i*i<=x;i++){
