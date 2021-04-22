@@ -3,7 +3,7 @@
 #pragma GCC target("avx2")
 #pragma GCC optimize("O3")
 #pragma GCC optimize("unroll-loops")
-#define PI arccos(-1)
+#define PI acos(-1)
 #define all(v) (v).begin(),(v).end()
 #define fi first
 #define se second
@@ -24,7 +24,15 @@ template<class T,class S,class R> constexpr inline void input(vector<T> &v,vecto
 }
 template<class T> constexpr inline void input(vector<vector<T>> &v){
   for(int i=0;i<v.size();i++){
-    for(int j=0;j<v[0].size();j++) cin >> v[i][j];
+    for(int j=0;j<v[i].size();j++) cin >> v[i][j];
+  }
+}
+template<class T> constexpr inline void input_graph(vector<vector<T>> &G,int inputcount,const bool isdirect = false,const bool indexed = 1){
+  T a,b;
+  for(int i=0;i<inputcount;i++){
+    cin >> a >> b;a -= indexed;b -= indexed;
+    G[a].emb(b);
+    if(!isdirect) G[b].emb(a);
   }
 }
 template<class T> constexpr inline void output(vector<T> &v,bool space = true){
@@ -44,7 +52,7 @@ template<class T,class S,class R> constexpr inline void output(vector<T> &v,vect
 }
 template<class T> constexpr inline void output(vector<vector<T>> &v){
   for(int i=0;i<v.size();i++){
-    for(int j=0;j<v[0].size()-1;j++) cout << v[i][j] << " ";
+    for(int j=0;j<v[i].size()-1;j++) cout << v[i][j] << " ";
     cout << v[i].back() << endll;
   }
 }
@@ -52,8 +60,7 @@ template<class T> constexpr inline bool on(T n,T i){
   return n&(1<<i);
 }
 template<class T,class S> constexpr inline T ceil(T x,S y){
-  if(x == 0) return 0;
-  else return (x-1)/y+1;
+  return (x+y-1)/y;
 }
 template<class T> constexpr bool isprime(T x){
   for(T i=2;i*i<=x;i++){
@@ -218,14 +225,14 @@ public:
   constexpr int height(){return V.size();}
   constexpr int width(){return V[0].size();}
   constexpr T &val(int a,int b){return V[a][b];}
-  constexpr vector<T> val(int a){return V[a];}
-  constexpr vector<vector<T>> val(){return V;}
+  constexpr vector<T> &val(int a){return V[a];}
+  constexpr vector<vector<T>> &val(){return V;}
   //ret(mat[i][j],elem(a[i][k],b[k][j]))
   constexpr mat calc(mat &b,function<T(T,T)> ret = [](T x,T y){return x+y;},function<T(T,T)> elem = [](T x,T y){return x*y;})const{
     vector<vector<T>> c(V.size(),vector<T>(b.width()));
     for(int i=0;i<V.size();i++){
-      for(int j=0;j<b.width();j++){
-        for(int k=0;k<b.height();k++) c[i][j] = ret(c[i][j],elem(V[i][k],b.val(k,j)));
+      for(int k=0;k<b.height();k++){
+        for(int j=0;j<b.width();j++) c[i][j] = ret(c[i][j],elem(V[i][k],b.val(k,j)));
       }
     }
     return mat(c);
