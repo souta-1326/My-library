@@ -63,6 +63,7 @@ template<class T,class S> constexpr inline T ceil(T x,S y){
   return (x+y-1)/y;
 }
 template<class T> constexpr bool isprime(T x){
+  if(x <= 1) return false;
   for(T i=2;i*i<=x;i++){
     if(x%i == 0) return false; 
   }
