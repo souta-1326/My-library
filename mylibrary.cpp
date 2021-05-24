@@ -13,6 +13,15 @@
 using namespace std;
 using namespace atcoder;
 using ll = long long;
+std::ostream& operator<<(std::ostream& os,const modint n){
+  return os << n.val();
+}
+std::ostream& operator<<(std::ostream& os,const modint998244353 n){
+  return os << n.val();
+}
+std::ostream& operator<<(std::ostream& os,const modint1000000007 n){
+  return os << n.val();
+}
 template<class T> constexpr inline void input(vector<T> &v){
   for(int i=0;i<v.size();i++) cin >> v[i];
 }
