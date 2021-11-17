@@ -36,6 +36,9 @@ template<class T> constexpr inline void input_graph(vector<vector<T>> &G,int inp
   }
 }
 template<class T> constexpr inline void output(vector<T> &v,bool space = true){
+  if(v.size() == 0){
+    cout << endll;return;
+  }
   if(space){
     for(int i=0;i<v.size()-1;i++) cout << v[i] << " ";
     cout << v.back() << endll;
@@ -52,12 +55,15 @@ template<class T,class S,class R> constexpr inline void output(vector<T> &v,vect
 }
 template<class T> constexpr inline void output(vector<vector<T>> &v){
   for(int i=0;i<v.size();i++){
+    if(v.size() == 0){
+      cout << endll;continue;
+    }
     for(int j=0;j<v[i].size()-1;j++) cout << v[i][j] << " ";
     cout << v[i].back() << endll;
   }
 }
 template<class T> constexpr inline bool on(T n,T i){
-  return n&(1<<i);
+  return n&(1LL<<i);
 }
 template<class T,class S> constexpr inline T ceil(T x,S y){
   return (x+y-1)/y;
@@ -313,8 +319,8 @@ public:
   constexpr line(T x1 = 0,T y1 = 0,T x2 = 1,T y2 = 1) noexcept {
     if(x1 != x2){
       a_inf = false;
-      a = frac<T>(y2-y1,x2-x1);
-      b = frac<T>(y1)-frac<T>(x1)*a;
+      a = frac(y2-y1,x2-x1);
+      b = frac(y1)-frac(x1)*a;
     }
     else{
       a_inf = true;
