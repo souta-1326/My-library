@@ -8,6 +8,7 @@
 #define fi first
 #define se second
 #define mpa make_pair
+#define mpt make_tuple
 #define emb emplace_back
 #define endll "\n"
 using namespace std;
@@ -27,7 +28,8 @@ template<class T> constexpr inline void input(vector<vector<T>> &v){
     for(int j=0;j<v[i].size();j++) cin >> v[i][j];
   }
 }
-template<class T> constexpr inline void input_graph(vector<vector<T>> &G,int inputcount,const bool isdirect = false,const bool indexed = 1){
+template<class T> constexpr inline void input_graph(vector<vector<T>> &G,int inputcount = -1,const bool isdirect = false,const bool indexed = 1){
+  if(inputcount == -1) inputcount = G.size()-1;
   T a,b;
   for(int i=0;i<inputcount;i++){
     cin >> a >> b;a -= indexed;b -= indexed;
@@ -91,7 +93,7 @@ vector<int> prime_format(int n){
   }
   return ans;
 }
-template<class T> vector<T> topo_sort(T N,vector<vector<T>> G){
+template<class T> vector<T> topo_sort(T N,const vector<vector<T>> &G){
   T i,j,f;
   vector<int> cnt(N);
   for(i=0;i<N;i++){
@@ -101,7 +103,7 @@ template<class T> vector<T> topo_sort(T N,vector<vector<T>> G){
   for(i=0;i<N;i++){
     if(cnt[i] == 0) q.emb(i);
   }
-  for(f=0;f<N;f++){
+  for(f=0;f<q.size();f++){
     for(i=0;i<G[q[f]].size();i++){
       cnt[G[q[f]][i]]--;
       if(cnt[G[q[f]][i]] == 0){
@@ -111,10 +113,10 @@ template<class T> vector<T> topo_sort(T N,vector<vector<T>> G){
   }
   return q;
 }
-template<class T> vector<T> dijkstra(T N,vector<T> st,vector<vector<pair<T,T>>> G){
+template<class T> vector<T> dijkstra(T N,vector<T> &st,vector<vector<pair<T,T>>> &G,const T inf = -1){
   T fn,fp,i;
   priority_queue<pair<T,T>,vector<pair<T,T>>,greater<>> q;
-  vector<T> D(N,-1);
+  vector<T> D(N,inf);
   for(i=0;i<st.size();i++){
     D[st[i]] = 0;
     q.push(mpa(0,st[i]));
@@ -131,8 +133,9 @@ template<class T> vector<T> dijkstra(T N,vector<T> st,vector<vector<pair<T,T>>> 
   }
   return D;
 }
-template<class T> vector<T> dijkstra(T N,T st,vector<vector<pair<T,T>>> G){
-  return dijkstra(N,vector<T>({st}),G);
+template<class T> vector<T> dijkstra(T N,T st,vector<vector<pair<T,T>>> &G,const T inf = -1){
+  vector<T> st_vec({st});
+  return dijkstra(N,st_vec,G,inf);
 }
 template<class T> class WarshallFloyd{
   T N,inf;
